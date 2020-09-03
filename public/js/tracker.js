@@ -1,5 +1,5 @@
 let map;
-let markers = new Map();
+let markers = [];
 
 var iconBase = "http://maps.google.com/mapfiles/kml/shapes/";
 
@@ -43,40 +43,65 @@ document.addEventListener("DOMContentLoaded", () => {
 function initMap() {
   navigator.geolocation.getCurrentPosition(pos => {
       const { latitude: lat, longitude: long } = pos.coords
-      var map = new google.maps.Map(document.getElementById("map"), {
+      map = new google.maps.Map(document.getElementById("map"), {
         center: new google.maps.LatLng(lat, long),
         zoom: 10
       });
       var vehicles = [
         {
-          position: new google.maps.LatLng(29.511719, 76.643383),
+          lat: 29.511719,
+          long: 76.743383,
+          type: "car"
+        },
+        {
+          lat: 29.521719,
+          long: 76.75243383,
           type: "bike"
         },
         {
-          position: new google.maps.LatLng(29.521790, 76.643480),
+          lat: 29.241719,
+          long: 76.6783383,
+          type: "car"
+        },
+         {
+          lat: 29.531719,
+          long: 76.6033383,
           type: "car"
         },
         {
-          psition: new google.maps.LatLng(29.531900, 76.643800),
+          lat: 29.351719,
+          long: 76.53383,
           type: "bike"
-        },
-        {
-          position: new google.maps.LatLng(29.501999, 76.643999),
-          type: "car"
-        },
-        {
-          position: new google.maps.LatLng(29.542200, 76.644400),
-          type: "car"
         }
       ];
       
       for (let i = 0; i < vehicles.length; i++) {
           var marker = new google.maps.Marker({
-            position: vehicles[i].position,
+            position: new google.maps.LatLng(vehicles[i].lat, vehicles[i].long),
             icon: icons[vehicles[i].type].icon,
             map: map
           });
+          markers.push(marker);
       }
+
+      setInterval(() => {
+        for (let i = 0; i < vehicles.length; i++) {
+          var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(vehicles[i].lat, vehicles[i].long),
+            icon: icons[vehicles[i].type].icon,
+            map: map
+          });
+          markers[i].setMap(null);
+          markers[i]=marker;
+          if(i%2==1) {
+            vehicles[i].lat += 0.001;
+            vehicles[i].lat += 0.001;
+          } else {
+            vehicles[i].lat -= 0.001;
+            vehicles[i].lat += 0.001;
+          }
+      }
+      }, 1000);
     },
       err => {
         console.error(err);
