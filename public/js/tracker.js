@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
   socket.on("currentLocations", locations => {
     markers.forEach((marker, id) => {
       marker.setMap(null);
-      markers.delete(id);
     });
   });
 });
@@ -45,7 +44,7 @@ function initMap() {
       const { latitude: lat, longitude: long } = pos.coords
       map = new google.maps.Map(document.getElementById("map"), {
         center: new google.maps.LatLng(lat, long),
-        zoom: 10
+        zoom: 9
       });
       var vehicles = [
         {
@@ -54,23 +53,28 @@ function initMap() {
           type: "car"
         },
         {
-          lat: 29.521719,
-          long: 76.75243383,
-          type: "bike"
-        },
-        {
-          lat: 29.241719,
-          long: 76.6783383,
+          lat: 29.341719,
+          long: 76.775783383,
           type: "car"
         },
-         {
+        {
           lat: 29.531719,
+          long: 77.6033383,
+          type: "car"
+        },
+        {
+          lat: 29.4231719,
           long: 76.6033383,
           type: "car"
         },
         {
-          lat: 29.351719,
-          long: 76.53383,
+          lat: 29.6521719,
+          long: 74.25243383,
+          type: "bike"
+        },
+        {
+          lat: 29.551719,
+          long: 76.23383,
           type: "bike"
         }
       ];
@@ -93,12 +97,12 @@ function initMap() {
           });
           markers[i].setMap(null);
           markers[i]=marker;
-          if(i%2==1) {
-            vehicles[i].lat += 0.001;
-            vehicles[i].lat += 0.001;
-          } else {
+          if(i%2==0) {
+            vehicles[i].lat += 0.003;
             vehicles[i].lat -= 0.001;
-            vehicles[i].lat += 0.001;
+          } else {
+            vehicles[i].lat -= 0.002;
+            vehicles[i].lat -= 0.021;
           }
       }
       }, 1000);
